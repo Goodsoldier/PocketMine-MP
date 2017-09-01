@@ -74,7 +74,7 @@ abstract class AsyncTask extends Collectable{
 		Server::getInstance()->getScheduler()->storeLocalComplex($this, $complexData);
 	}
 
-	public function run(){
+	public function run() : void{
 		$this->result = null;
 
 		if($this->cancelRun !== true){
@@ -131,7 +131,7 @@ abstract class AsyncTask extends Collectable{
 	/**
 	 * @return int|null
 	 */
-	public function getTaskId(){
+	public function getTaskId() : ?int{
 		return $this->taskId;
 	}
 

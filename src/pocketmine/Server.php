@@ -388,7 +388,7 @@ class Server{
 	/**
 	 * @param bool $value
 	 */
-	public function setAutoSave(bool $value){
+	public function setAutoSave(bool $value) : void{
 		$this->autoSave = $value;
 		foreach($this->getLevels() as $level){
 			$level->setAutoSave($this->autoSave);
@@ -706,7 +706,7 @@ class Server{
 		return $this->playerList;
 	}
 
-	public function addRecipe(Recipe $recipe){
+	public function addRecipe(Recipe $recipe) : void{
 		$this->craftingManager->registerRecipe($recipe);
 	}
 
@@ -801,7 +801,7 @@ class Server{
 	 * @param CompoundTag $nbtTag
 	 * @param bool        $async
 	 */
-	public function saveOfflinePlayerData(string $name, CompoundTag $nbtTag, bool $async = false){
+	public function saveOfflinePlayerData(string $name, CompoundTag $nbtTag, bool $async = false) : void{
 		$ev = new PlayerDataSaveEvent($nbtTag, $name);
 		$ev->setCancelled(!$this->shouldSavePlayerData());
 
@@ -829,7 +829,7 @@ class Server{
 	 *
 	 * @return Player|null
 	 */
-	public function getPlayer(string $name){
+	public function getPlayer(string $name) : ?Player{
 		$found = null;
 		$name = strtolower($name);
 		$delta = PHP_INT_MAX;
@@ -854,7 +854,7 @@ class Server{
 	 *
 	 * @return Player|null
 	 */
-	public function getPlayerExact(string $name){
+	public function getPlayerExact(string $name) : ?Player{
 		$name = strtolower($name);
 		foreach($this->getOnlinePlayers() as $player){
 			if($player->getLowerCaseName() === $name){
@@ -915,7 +915,7 @@ class Server{
 	/**
 	 * @return Level|null
 	 */
-	public function getDefaultLevel(){
+	public function getDefaultLevel() : ?Level{
 		return $this->levelDefault;
 	}
 
@@ -926,7 +926,7 @@ class Server{
 	 *
 	 * @param Level|null $level
 	 */
-	public function setDefaultLevel($level){
+	public function setDefaultLevel(?Level $level) : void{
 		if($level === null or ($this->isLevelLoaded($level->getFolderName()) and $level !== $this->levelDefault)){
 			$this->levelDefault = $level;
 		}
@@ -946,7 +946,7 @@ class Server{
 	 *
 	 * @return Level|null
 	 */
-	public function getLevel(int $levelId){
+	public function getLevel(int $levelId) : ?Level{
 		if(isset($this->levels[$levelId])){
 			return $this->levels[$levelId];
 		}
@@ -961,7 +961,7 @@ class Server{
 	 *
 	 * @return Level|null
 	 */
-	public function getLevelByName(string $name){
+	public function getLevelByName(string $name) : ?Level{
 		foreach($this->getLevels() as $level){
 			if($level->getFolderName() === $name){
 				return $level;
@@ -1149,7 +1149,7 @@ class Server{
 	 *
 	 * @return Entity|null
 	 */
-	public function findEntity(int $entityId, Level $expectedLevel = null){
+	public function findEntity(int $entityId, Level $expectedLevel = null) : ?Entity{
 		$levels = $this->levels;
 		if($expectedLevel !== null){
 			array_unshift($levels, $expectedLevel);
@@ -1203,7 +1203,7 @@ class Server{
 	 * @param string $variable
 	 * @param string $value
 	 */
-	public function setConfigString(string $variable, string $value){
+	public function setConfigString(string $variable, string $value) : void{
 		$this->properties->set($variable, $value);
 	}
 
@@ -1226,7 +1226,7 @@ class Server{
 	 * @param string $variable
 	 * @param int    $value
 	 */
-	public function setConfigInt(string $variable, int $value){
+	public function setConfigInt(string $variable, int $value) : void{
 		$this->properties->set($variable, $value);
 	}
 
@@ -1262,7 +1262,7 @@ class Server{
 	 * @param string $variable
 	 * @param bool   $value
 	 */
-	public function setConfigBool(string $variable, bool $value){
+	public function setConfigBool(string $variable, bool $value) : void{
 		$this->properties->set($variable, $value == true ? "1" : "0");
 	}
 
@@ -1271,7 +1271,7 @@ class Server{
 	 *
 	 * @return PluginIdentifiableCommand|null
 	 */
-	public function getPluginCommand(string $name){
+	public function getPluginCommand(string $name) : ?PluginIdentifiableCommand{
 		if(($command = $this->commandMap->getCommand($name)) instanceof PluginIdentifiableCommand){
 			return $command;
 		}else{
@@ -1296,7 +1296,7 @@ class Server{
 	/**
 	 * @param string $name
 	 */
-	public function addOp(string $name){
+	public function addOp(string $name) : void{
 		$this->operators->set(strtolower($name), true);
 
 		if(($player = $this->getPlayerExact($name)) !== null){
@@ -1308,7 +1308,7 @@ class Server{
 	/**
 	 * @param string $name
 	 */
-	public function removeOp(string $name){
+	public function removeOp(string $name) : void{
 		$this->operators->remove(strtolower($name));
 
 		if(($player = $this->getPlayerExact($name)) !== null){
@@ -1320,7 +1320,7 @@ class Server{
 	/**
 	 * @param string $name
 	 */
-	public function addWhitelist(string $name){
+	public function addWhitelist(string $name) : void{
 		$this->whitelist->set(strtolower($name), true);
 		$this->whitelist->save(true);
 	}
@@ -1328,7 +1328,7 @@ class Server{
 	/**
 	 * @param string $name
 	 */
-	public function removeWhitelist(string $name){
+	public function removeWhitelist(string $name) : void{
 		$this->whitelist->remove(strtolower($name));
 		$this->whitelist->save();
 	}
@@ -1365,7 +1365,7 @@ class Server{
 		return $this->operators;
 	}
 
-	public function reloadWhitelist(){
+	public function reloadWhitelist() : void{
 		$this->whitelist->reload();
 	}
 
@@ -1398,7 +1398,7 @@ class Server{
 		return self::$instance;
 	}
 
-	public static function microSleep(int $microseconds){
+	public static function microSleep(int $microseconds) : void{
 		Server::$sleeper->synchronized(function(int $ms){
 			Server::$sleeper->wait($ms);
 		}, $microseconds);
@@ -1825,7 +1825,7 @@ class Server{
 	 * @param Player[]   $players
 	 * @param DataPacket $packet
 	 */
-	public function broadcastPacket(array $players, DataPacket $packet){
+	public function broadcastPacket(array $players, DataPacket $packet) : void{
 		$packet->encode();
 		$this->batchPackets($players, [$packet], false);
 	}
@@ -1838,7 +1838,7 @@ class Server{
 	 * @param bool         $forceSync
 	 * @param bool         $immediate
 	 */
-	public function batchPackets(array $players, array $packets, bool $forceSync = false, bool $immediate = false){
+	public function batchPackets(array $players, array $packets, bool $forceSync = false, bool $immediate = false) : void{
 		Timings::$playerNetworkTimer->startTiming();
 
 		$targets = [];
@@ -1873,7 +1873,7 @@ class Server{
 		Timings::$playerNetworkTimer->stopTiming();
 	}
 
-	public function broadcastPacketsCallback(BatchPacket $pk, array $identifiers, bool $immediate = false){
+	public function broadcastPacketsCallback(BatchPacket $pk, array $identifiers, bool $immediate = false) : void{
 		if(!$pk->isEncoded){
 			$pk->encode();
 		}
@@ -1898,7 +1898,7 @@ class Server{
 	/**
 	 * @param int $type
 	 */
-	public function enablePlugins(int $type){
+	public function enablePlugins(int $type) : void{
 		foreach($this->pluginManager->getPlugins() as $plugin){
 			if(!$plugin->isEnabled() and $plugin->getDescription()->getOrder() === $type){
 				$this->enablePlugin($plugin);
@@ -1914,15 +1914,15 @@ class Server{
 	/**
 	 * @param Plugin $plugin
 	 */
-	public function enablePlugin(Plugin $plugin){
+	public function enablePlugin(Plugin $plugin) : void{
 		$this->pluginManager->enablePlugin($plugin);
 	}
 
-	public function disablePlugins(){
+	public function disablePlugins() : void{
 		$this->pluginManager->disablePlugins();
 	}
 
-	public function checkConsole(){
+	public function checkConsole() : void{
 		Timings::$serverCommandTimer->startTiming();
 		if(($line = $this->console->getLine()) !== null){
 			$this->pluginManager->callEvent($ev = new ServerCommandEvent($this->consoleSender, $line));
@@ -1952,7 +1952,7 @@ class Server{
 		return false;
 	}
 
-	public function reload(){
+	public function reload() : void{
 		$this->logger->info("Saving levels...");
 
 		foreach($this->levels as $level){
@@ -1991,11 +1991,11 @@ class Server{
 	/**
 	 * Shutdowns the server correctly
 	 */
-	public function shutdown(){
+	public function shutdown() : void{
 		$this->isRunning = false;
 	}
 
-	public function forceShutdown(){
+	public function forceShutdown() : void{
 		if($this->hasStopped){
 			return;
 		}
@@ -2074,7 +2074,7 @@ class Server{
 	/**
 	 * Starts the PocketMine-MP server and starts processing ticks and packets
 	 */
-	public function start(){
+	public function start() : void{
 		if($this->getConfigBoolean("enable-query", true) === true){
 			$this->queryHandler = new QueryHandler();
 		}
@@ -2111,13 +2111,13 @@ class Server{
 		$this->forceShutdown();
 	}
 
-	public function handleSignal($signo){
+	public function handleSignal($signo) : void{
 		if($signo === SIGTERM or $signo === SIGINT or $signo === SIGHUP){
 			$this->shutdown();
 		}
 	}
 
-	public function exceptionHandler(\Throwable $e, $trace = null){
+	public function exceptionHandler(\Throwable $e, $trace = null) : void{
 		if($e === null){
 			return;
 		}
@@ -2155,7 +2155,7 @@ class Server{
 		$this->crashDump();
 	}
 
-	public function crashDump(){
+	public function crashDump() : void{
 		if($this->isRunning === false){
 			return;
 		}
@@ -2225,7 +2225,7 @@ class Server{
 		return [];
 	}
 
-	private function tickProcessor(){
+	private function tickProcessor() : void{
 		$this->nextTick = microtime(true);
 		while($this->isRunning){
 			$this->tick();
@@ -2240,7 +2240,7 @@ class Server{
 		}
 	}
 
-	public function onPlayerLogin(Player $player){
+	public function onPlayerLogin(Player $player) : void{
 		if($this->sendUsageTicker > 0){
 			$this->uniquePlayers[$player->getRawUniqueId()] = $player->getRawUniqueId();
 		}
@@ -2248,27 +2248,27 @@ class Server{
 		$this->loggedInPlayers[$player->getRawUniqueId()] = $player;
 	}
 
-	public function onPlayerCompleteLoginSequence(Player $player){
+	public function onPlayerCompleteLoginSequence(Player $player) : void{
 		$this->sendFullPlayerListData($player);
 		$player->dataPacket($this->craftingManager->getCraftingDataPacket());
 	}
 
-	public function onPlayerLogout(Player $player){
+	public function onPlayerLogout(Player $player) : void{
 		unset($this->loggedInPlayers[$player->getRawUniqueId()]);
 	}
 
-	public function addPlayer($identifier, Player $player){
+	public function addPlayer($identifier, Player $player) : void{
 		$this->players[$identifier] = $player;
 		$this->identifiers[spl_object_hash($player)] = $identifier;
 	}
 
-	public function addOnlinePlayer(Player $player){
+	public function addOnlinePlayer(Player $player) : void{
 		$this->updatePlayerListData($player->getUniqueId(), $player->getId(), $player->getDisplayName(), $player->getSkinId(), $player->getSkinData());
 
 		$this->playerList[$player->getRawUniqueId()] = $player;
 	}
 
-	public function removeOnlinePlayer(Player $player){
+	public function removeOnlinePlayer(Player $player) : void{
 		if(isset($this->playerList[$player->getRawUniqueId()])){
 			unset($this->playerList[$player->getRawUniqueId()]);
 
@@ -2279,21 +2279,21 @@ class Server{
 		}
 	}
 
-	public function updatePlayerListData(UUID $uuid, $entityId, $name, $skinId, $skinData, array $players = null){
+	public function updatePlayerListData(UUID $uuid, $entityId, $name, $skinId, $skinData, array $players = null) : void{
 		$pk = new PlayerListPacket();
 		$pk->type = PlayerListPacket::TYPE_ADD;
 		$pk->entries[] = [$uuid, $entityId, $name, $skinId, $skinData];
 		$this->broadcastPacket($players ?? $this->playerList, $pk);
 	}
 
-	public function removePlayerListData(UUID $uuid, array $players = null){
+	public function removePlayerListData(UUID $uuid, array $players = null) : void{
 		$pk = new PlayerListPacket();
 		$pk->type = PlayerListPacket::TYPE_REMOVE;
 		$pk->entries[] = [$uuid];
 		$this->broadcastPacket($players ?? $this->playerList, $pk);
 	}
 
-	public function sendFullPlayerListData(Player $p){
+	public function sendFullPlayerListData(Player $p) : void{
 		$pk = new PlayerListPacket();
 		$pk->type = PlayerListPacket::TYPE_ADD;
 		foreach($this->playerList as $player){
@@ -2303,7 +2303,7 @@ class Server{
 		$p->dataPacket($pk);
 	}
 
-	private function checkTickUpdates($currentTick, $tickTime){
+	private function checkTickUpdates(int $currentTick, float $tickTime) : void{
 		foreach($this->players as $p){
 			if(!$p->loggedIn and ($tickTime - $p->creationTime) >= 10){
 				$p->close("", "Login timeout");
@@ -2348,7 +2348,7 @@ class Server{
 		}
 	}
 
-	public function doAutoSave(){
+	public function doAutoSave() : void{
 		if($this->getAutoSave()){
 			Timings::$worldSaveTimer->startTiming();
 			foreach($this->players as $index => $player){
@@ -2366,7 +2366,7 @@ class Server{
 		}
 	}
 
-	public function sendUsage($type = SendUsageTask::TYPE_STATUS){
+	public function sendUsage(int $type = SendUsageTask::TYPE_STATUS) : void{
 		if($this->getProperty("anonymous-statistics.enabled", true)){
 			$this->scheduler->scheduleAsyncTask(new SendUsageTask($this, $type, $this->uniquePlayers));
 		}
@@ -2402,7 +2402,7 @@ class Server{
 		return $this->memoryManager;
 	}
 
-	private function titleTick(){
+	private function titleTick() : void{
 		Timings::$titleTickTimer->startTiming();
 		$d = Utils::getRealMemoryUsage();
 
@@ -2430,7 +2430,7 @@ class Server{
 	 *
 	 * TODO: move this to Network
 	 */
-	public function handlePacket(string $address, int $port, string $payload){
+	public function handlePacket(string $address, int $port, string $payload) : void{
 		try{
 			if(strlen($payload) > 2 and substr($payload, 0, 2) === "\xfe\xfd" and $this->queryHandler instanceof QueryHandler){
 				$this->queryHandler->handle($address, $port, $payload);

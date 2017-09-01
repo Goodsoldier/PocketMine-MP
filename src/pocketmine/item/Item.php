@@ -158,7 +158,7 @@ class Item implements ItemIds, \JsonSerializable{
 	 *
 	 * @return Item|null
 	 */
-	public static function getCreativeItem(int $index){
+	public static function getCreativeItem(int $index) : ?Item{
 		return Item::$creative[$index] ?? null;
 	}
 
@@ -293,7 +293,7 @@ class Item implements ItemIds, \JsonSerializable{
 	/**
 	 * @return CompoundTag|null
 	 */
-	public function getCustomBlockData(){
+	public function getCustomBlockData() : ?CompoundTag{
 		if(!$this->hasCompoundTag()){
 			return null;
 		}
@@ -346,7 +346,7 @@ class Item implements ItemIds, \JsonSerializable{
 	 *
 	 * @return Enchantment|null
 	 */
-	public function getEnchantment(int $id){
+	public function getEnchantment(int $id) : ?Enchantment{
 		if(!$this->hasEnchantments()){
 			return null;
 		}
@@ -579,7 +579,7 @@ class Item implements ItemIds, \JsonSerializable{
 	 * @param $name
 	 * @return Tag|null
 	 */
-	public function getNamedTagEntry($name){
+	public function getNamedTagEntry($name) : ?Tag{
 		$tag = $this->getNamedTag();
 		if($tag !== null){
 			return $tag->{$name} ?? null;
@@ -592,7 +592,7 @@ class Item implements ItemIds, \JsonSerializable{
 	 * Returns a tree of Tag objects representing the Item's NBT
 	 * @return null|CompoundTag
 	 */
-	public function getNamedTag(){
+	public function getNamedTag() : ?CompoundTag{
 		if(!$this->hasCompoundTag()){
 			return null;
 		}elseif($this->cachedNBT !== null){

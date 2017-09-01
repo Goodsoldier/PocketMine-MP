@@ -1482,7 +1482,7 @@ class Level implements ChunkManager, Metadatable{
 	 *
 	 * @return DroppedItem|null
 	 */
-	public function dropItem(Vector3 $source, Item $item, Vector3 $motion = null, int $delay = 10){
+	public function dropItem(Vector3 $source, Item $item, Vector3 $motion = null, int $delay = 10) : ?DroppedItem{
 		$motion = $motion ?? new Vector3(lcg_value() * 0.2 - 0.1, 0.2, lcg_value() * 0.2 - 0.1);
 		$itemTag = $item->nbtSerialize();
 		$itemTag->setName("Item");
@@ -1805,7 +1805,7 @@ class Level implements ChunkManager, Metadatable{
 	 *
 	 * @return Entity|null
 	 */
-	public function getEntity(int $entityId){
+	public function getEntity(int $entityId) : ?Entity{
 		return $this->entities[$entityId] ?? null;
 	}
 
@@ -1893,7 +1893,7 @@ class Level implements ChunkManager, Metadatable{
 	 *
 	 * @return Tile|null
 	 */
-	public function getTileById(int $tileId){
+	public function getTileById(int $tileId) : ?Tile{
 		return $this->tiles[$tileId] ?? null;
 	}
 
@@ -1920,7 +1920,7 @@ class Level implements ChunkManager, Metadatable{
 	 *
 	 * @return Tile|null
 	 */
-	public function getTile(Vector3 $pos){
+	public function getTile(Vector3 $pos) : ?Tile{
 		$chunk = $this->getChunk($pos->x >> 4, $pos->z >> 4, false);
 
 		if($chunk !== null){
@@ -2154,7 +2154,7 @@ class Level implements ChunkManager, Metadatable{
 	 *
 	 * @return Chunk|null
 	 */
-	public function getChunk(int $x, int $z, bool $create = false){
+	public function getChunk(int $x, int $z, bool $create = false) : ?Chunk{
 		if(isset($this->chunks[$index = Level::chunkHash($x, $z)])){
 			return $this->chunks[$index];
 		}elseif($this->loadChunk($x, $z, $create)){
